@@ -16,6 +16,7 @@ const Stock = lazy(() => import('./pages/Stock')), Finance = lazy(() => import('
 function Shell() {
   const appearance = useStore(s => s.appearance), tick = useStore(s => s.tick), loc = useLocation()
   useEffect(() => applyAppearance(appearance), [appearance])
+  useEffect(() => { useStore.setState({ menu: null, drawerId: null, commandOpen: false }) }, [loc.pathname])
   useEffect(() => { let n = 0; const t = setInterval(() => tick(++n), 1000); return () => clearInterval(t) }, [tick])
   useEffect(() => { // simulated incoming alerts so the demo feels alive
     const t = setInterval(() => { const s = useStore.getState(); const ids = s.layout.stations; if (!ids.length) return; const p = ids[Math.floor(Math.random() * ids.length)]; s.logActivity(Math.random() > .5 ? 'checkin' : 'session', `${Math.random() > .5 ? 'Check-in' : 'Session tick'} · ${p.name} (simulated)`) }, 25000)

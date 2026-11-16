@@ -132,7 +132,7 @@ export function CommandPalette() {
   const results = useMemo(() => {
     const s = q.toLowerCase(), r: { key: string; icon: React.ReactNode; title: string; sub: string; run: () => void; kind: string }[] = []
     if (scope === 'all' || scope === 'page') NAV.concat([{ to: '/ui-showcase', label: 'UI Showcase', icon: FlaskConical }]).filter(n => n.label.toLowerCase().includes(s)).forEach(n => r.push({ key: n.to, icon: <n.icon size={15} />, title: n.label, sub: 'Page', kind: 'page', run: () => nav(n.to) }))
-    if (scope === 'all' || scope === 'pc') layout.filter(p => (p.name + ' ' + (live[p.id]?.user ?? '')).toLowerCase().includes(s)).slice(0, s ? 12 : 4).forEach(p => r.push({ key: p.id, icon: <Monitor size={15} />, title: p.name, sub: `${live[p.id]?.status} · ${live[p.id]?.user ?? 'vacant'}`, kind: 'pc', run: () => { nav('/cafe'); set({ drawerId: p.id }) } }))
+    if (scope === 'all' || scope === 'pc') layout.filter(p => (p.name + ' ' + (live[p.id]?.user ?? '')).toLowerCase().includes(s)).slice(0, s ? 12 : 4).forEach(p => r.push({ key: p.id, icon: <Monitor size={15} />, title: p.name, sub: `${live[p.id]?.status} · ${live[p.id]?.user ?? 'vacant'}`, kind: 'pc', run: () => { nav('/cafe'); setTimeout(() => set({ drawerId: p.id }), 80) } }))
     if (scope === 'all' || scope === 'member') members.filter(m => (m.user + m.name).toLowerCase().includes(s)).slice(0, s ? 10 : 3).forEach(m => r.push({ key: m.id, icon: <UserRound size={15} />, title: m.user, sub: `${m.tier} · $${m.wallet.toFixed(2)}`, kind: 'member', run: () => nav('/members') }))
     return r
   }, [q, scope, layout, live, members, nav, set])
