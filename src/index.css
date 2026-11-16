@@ -229,3 +229,7 @@ table.gt tbody tr { transition: background .15s; } table.gt tbody tr:hover { bac
   *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
   .orb, .wave { animation: none !important; }
 }
+
+/* prevent grid/flex children from forcing horizontal overflow on small screens */
+.grid > *, .page .flex > .noscroll-x { min-width: 0; }
+@media (min-width: 640px) { .sm\:grid-cols-2.grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

@@ -31,15 +31,15 @@ function POS() {
   const mem = s.members.find(m => m.id === s.cartMember)
   const pays = [['Cash', Banknote], ['Card', CreditCard], ['Member Balance', Wallet], ['PC Tab', Receipt]] as const
   return (
-    <div className="grid gap-3 h-full lg:grid-cols-[1fr_390px] min-h-0">
-      <div className="flex flex-col gap-3 min-h-0">
+    <div className="grid gap-3 lg:h-full lg:grid-cols-[minmax(0,1fr)_390px] min-h-0">
+      <div className="flex flex-col gap-3 lg:min-h-0">
         <div className="flex flex-wrap gap-2 items-center"><SearchInput className="flex-1 min-w-[180px] max-w-sm" value={q} onChange={setQ} placeholder="Search products…" />
           <div className="noscroll-x overflow-x-auto max-w-full"><Tabs size="sm" value={cat as 'All'} onChange={setCat as never} tabs={CATS.map(c => ({ id: c, label: c }))} /></div></div>
-        <div className="overflow-y-auto grid gap-2.5 content-start pb-24 lg:pb-2 grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 flex-1 min-h-0">
+        <div className="lg:overflow-y-auto grid gap-2.5 content-start lg:pb-2 grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 lg:flex-1 lg:min-h-0">
           {prods.map(p => <ProductCard key={p.sku} p={p} onAdd={() => s.addToCart(p.sku)} />)}{!prods.length && <div className="col-span-full sub p-8 text-center">No products match.</div>}
         </div>
       </div>
-      <Glass className="flex flex-col min-h-0 max-h-full overflow-hidden">
+      <Glass className="flex flex-col lg:min-h-0 lg:max-h-full lg:overflow-hidden mb-20 lg:mb-0">
         <div className="p-3.5 grid grid-cols-2 gap-2.5 border-b border-white/10">
           <Select label="Assigned PC" value={s.cartPc} onChange={v => s.set({ cartPc: v })} options={[{ value: '', label: 'Counter / no PC' }, ...s.layout.stations.map(a => ({ value: a.id, label: `${a.name}${s.live[a.id]?.user ? ' · ' + s.live[a.id].user : ''}` }))]} />
           <Combobox label="Member" value={s.cartMember} onChange={v => s.set({ cartMember: v })} options={[{ value: '', label: 'Walk-in' }, ...s.members.map(m => ({ value: m.id, label: m.user, hint: `$${m.wallet.toFixed(0)}` }))]} placeholder="Walk-in" />
@@ -72,7 +72,7 @@ export default function Cafe() {
         <Tabs value={mode} onChange={v => set({ cafeMode: v })} tabs={[{ id: 'pos', label: 'POS & Cart', icon: <ShoppingCart size={15} />, count: cartN || undefined }, { id: 'floor', label: 'Floor Map', icon: <MapIcon size={15} /> }]} />
         <div className="text-xs muted hidden sm:block">{mode === 'pos' ? 'Cart is kept when you switch to the floor and back.' : 'Live operations & layout editor'}</div>
       </div>
-      <div className="flex-1 min-h-0">{mode === 'pos' ? <POS /> : <FloorMap />}</div>
+      <div className={mode === 'pos' ? 'flex-1 min-h-0 overflow-y-auto lg:overflow-hidden' : 'flex-1 min-h-0'}>{mode === 'pos' ? <POS /> : <FloorMap />}</div>
       {mode === 'floor' && <BatchBar />}
     </div>
   )
